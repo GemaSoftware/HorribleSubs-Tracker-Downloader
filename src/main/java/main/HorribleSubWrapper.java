@@ -36,9 +36,17 @@ public class HorribleSubWrapper {
 
         try{
             int choice = Integer.parseInt(option);
-
+            showAnimeDetails(animeList.get(choice-1));
+            System.out.println("go to show details from here.");
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void showAnimeDetails(Anime anime) {
+
+        WebUtils.fetchAnimeID(anime);
+        WebUtils.fetchAnimeDetails(anime);
+
     }
 }
