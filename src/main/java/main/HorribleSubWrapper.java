@@ -5,6 +5,7 @@ import models.Episode;
 import utilities.WebUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -60,7 +61,7 @@ public class HorribleSubWrapper {
         //testing episode adder.
         for (Episode e :
                 anime.getAnimeEpisodeList()) {
-            System.out.println(e.getEpisodeReleaseDate() + " " + e.getEpisodeNumber());
+            System.out.println(e.getEpisodeReleaseDate() + " " + e.getEpisodeNumber() + " episode links - " + Arrays.asList(e.getEpisodeMagnetLink()));
         }
 
     }

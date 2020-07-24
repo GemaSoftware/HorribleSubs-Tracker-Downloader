@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,7 +86,17 @@ public class WebUtils {
                         episode.setEpisodeReleaseDate(epi.select("span.rls-date").first().text());
 
                         //TBI - add all episode magnet links for each quality
+                        Element episodeLinks = epi.selectFirst("div.rls-links-container");
 
+                        Elements episodeQualityLinks = episodeLinks.select("div.rls-link");
+
+                        //Adds all quality links to each episode.
+                        for (Element quality :
+                                episodeQualityLinks) {
+                            episode.addLink(quality.attr("id"), quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
+                        }
+
+                        //adds episode to anime object.
                         anime.addAnimeToList(episode);
                     }
 
