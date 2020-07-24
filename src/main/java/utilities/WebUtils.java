@@ -1,6 +1,7 @@
 package utilities;
 
 import models.Anime;
+import models.Episode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -60,8 +61,42 @@ public class WebUtils {
 
 
     //Reach HorribleSubs API using url with hsubID attached to it.
-    public static void fetchAnimeDetails(Anime anime) {
+    public static void fetchAnimeEpisodes(Anime anime) {
         //To be implemented.
+
+        String apiURL = "https://horriblesubs.info/api.php";
+        int  pageLimit = 5; //max 60 episodes for now.
+
+        for (int i=0; i<pageLimit; i++){
+            String apiEpiURL = apiURL + "?method=getshows&showid=" + anime.getAnimeHSID() + "&nextid=" + i +"&type=show";
+
+            try {
+                Document episodePage = Jsoup.connect(apiEpiURL).get();
+                if (episodePage.html().contains("DONE")){
+                    System.out.println("Reached end of episode list");
+                    break;
+                } else {
+                    Elements episodes = episodePage.select("div.rls-info-container");
+                    for (Element epi :
+                            episodes) {
+                        Episode episode = new Episode(anime, epi.attr("id"));
+
+                        //test date string
+                        episode.setEpisodeReleaseDate(epi.select("span.rls-date").first().text());
+
+                        //TBI - add all episode magnet links for each quality
+
+                        anime.addAnimeToList(episode);
+                    }
+
+                }
+            } catch (IOException e) {
+                System.out.println("Could not open episodes page.");
+                e.printStackTrace();
+            }
+
+
+        }
 
         //Test - checking for hshow ID:
         System.out.println(anime.getAnimeHSID()+ " show ID");
