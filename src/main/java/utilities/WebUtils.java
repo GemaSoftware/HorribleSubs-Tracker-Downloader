@@ -15,9 +15,9 @@ public class WebUtils {
 
     //Future - add utility methods to scrap site and find information of all shows/specific showIDs
 
-    public static ArrayList<Anime> fetchHorribleAnime() {
+    public static ArrayList<Anime> fetchHorribleAnime(String type) {
         ArrayList<Anime> animeArrayList = new ArrayList<>();
-        String url = "https://horriblesubs.info/shows/";
+        String url = "https://horriblesubs.info" + type;
         try{
             Document htmlpage = Jsoup.connect(url).get();
             Elements shows = htmlpage.select("div.ind-show");

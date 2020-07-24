@@ -10,12 +10,18 @@ import java.util.Scanner;
 public class HorribleSubWrapper {
 
     private ArrayList<Anime> globalAnimeList;
+    private ArrayList<Anime> currentAiringList;
     public HorribleSubWrapper(){
-        globalAnimeList = WebUtils.fetchHorribleAnime();
+        globalAnimeList = WebUtils.fetchHorribleAnime("/shows/");
+        currentAiringList = WebUtils.fetchHorribleAnime("/current-season/");
     }
 
     public List<Anime> getGlobalAnimeList() {
         return globalAnimeList;
+    }
+
+    public ArrayList<Anime> getCurrentAiringList() {
+        return currentAiringList;
     }
 
     public void searchAnime(){
