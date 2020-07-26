@@ -41,18 +41,24 @@ public class WebUtils {
     //Gets horrible subs ID for show and sets anime object ID.
     //Could be obsolete if adding DB. Will just save titles and id for future use.
     public static void fetchAnimeID(Anime anime){
-        String url = "https://horriblesubs.info/shows" + anime.getAnimeLink();
-        System.out.println("Grabing shows Hs ID");
-        try{
-            Document htmlPage = Jsoup.connect(url).get();
-            //Grabs HS ID (int only) from the URL Script tag using JSoup and CSS Selectors.
-            Element hs = htmlPage.select(".entry-content > script:nth-child(2)").first();
-            String numberOnly= hs.data().replaceAll("[^0-9]", "");
-            anime.setAnimeHSID(Integer.parseInt(numberOnly));
-        } catch (Exception e){
-            System.out.println("hs id not found");
-            e.printStackTrace();
+
+        if(anime.getAnimeHSID() == null){
+            String url = "https://horriblesubs.info/shows" + anime.getAnimeLink();
+            System.out.println("Grabing shows Hs ID");
+            try{
+                Document htmlPage = Jsoup.connect(url).get();
+                //Grabs HS ID (int only) from the URL Script tag using JSoup and CSS Selectors.
+                Element hs = htmlPage.select(".entry-content > script:nth-child(2)").first();
+                String numberOnly= hs.data().replaceAll("[^0-9]", "");
+                anime.setAnimeHSID(Integer.parseInt(numberOnly));
+            } catch (Exception e){
+                System.out.println("hs id not found");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("already have ID");
         }
+
     }
 
     public static ArrayList<Anime> searchAnimeList(String searchQuery, ArrayList<Anime> animeArrayList) {
@@ -65,51 +71,65 @@ public class WebUtils {
     public static void fetchAnimeEpisodes(Anime anime) {
         //To be implemented.
 
-        String apiURL = "https://horriblesubs.info/api.php";
-        int  pageLimit = 5; //max 60 episodes for now.
+        if (!(anime.getAnimeEpisodeList().size() > 0)) {
+            String apiURL = "https://horriblesubs.info/api.php";
+            int pageLimit = 5; //max 60 episodes for now.
 
-        for (int i=0; i<pageLimit; i++){
-            String apiEpiURL = apiURL + "?method=getshows&showid=" + anime.getAnimeHSID() + "&nextid=" + i +"&type=show";
+            for (int i = 0; i < pageLimit; i++) {
+                String apiEpiURL = apiURL + "?method=getshows&showid=" + anime.getAnimeHSID() + "&nextid=" + i + "&type=show";
 
-            try {
-                Document episodePage = Jsoup.connect(apiEpiURL).get();
-                if (episodePage.html().contains("DONE")){
-                    System.out.println("Reached end of episode list");
-                    break;
-                } else {
-                    Elements episodes = episodePage.select("div.rls-info-container");
-                    for (Element epi :
-                            episodes) {
-                        Episode episode = new Episode(anime, epi.attr("id"));
+                try {
+                    Document episodePage = Jsoup.connect(apiEpiURL).get();
+                    if (episodePage.html().contains("DONE")) {
+                        System.out.println("Reached end of episode list");
+                        break;
+                    } else {
+                        Elements episodes = episodePage.select("div.rls-info-container");
+                        for (Element epi :
+                                episodes) {
+                            Episode episode = new Episode(anime, epi.attr("id"));
 
-                        //test date string
-                        episode.setEpisodeReleaseDate(epi.select("span.rls-date").first().text());
+                            //test date string
+                            episode.setEpisodeReleaseDate(epi.select("span.rls-date").first().text());
 
-                        //TBI - add all episode magnet links for each quality
-                        Element episodeLinks = epi.selectFirst("div.rls-links-container");
+                            //TBI - add all episode magnet links for each quality
+                            Element episodeLinks = epi.selectFirst("div.rls-links-container");
 
-                        Elements episodeQualityLinks = episodeLinks.select("div.rls-link");
+                            Elements episodeQualityLinks = episodeLinks.select("div.rls-link");
 
-                        //Adds all quality links to each episode.
-                        for (Element quality :
-                                episodeQualityLinks) {
-                            episode.addLink(quality.attr("id"), quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
+                            //Adds all quality links to each episode.
+                            for (Element quality :
+                                    episodeQualityLinks) {
+                                if (quality.attr("id").contains("480p")) {
+                                    episode.addLink("480p", quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
+                                } else if (quality.attr("id").contains("720p")) {
+                                    episode.addLink("720p", quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
+                                } else if (quality.attr("id").contains("1080p")) {
+                                    episode.addLink("1080p", quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
+                                } else {
+                                    System.out.println(quality.attr("id"));
+                                }
+                            }
+
+                            //adds episode to anime object.
+                            anime.addAnimeToList(episode);
                         }
-
-                        //adds episode to anime object.
-                        anime.addAnimeToList(episode);
                     }
 
+
+                } catch (IOException e) {
+                    System.out.println("Could not open episodes page.");
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                System.out.println("Could not open episodes page.");
-                e.printStackTrace();
+
+
             }
 
-
+            //Test - checking for hshow ID:
+            System.out.println(anime.getAnimeHSID() + " show ID");
+        } else {
+            System.out.println("list already contains elements.");
         }
-
-        //Test - checking for hshow ID:
-        System.out.println(anime.getAnimeHSID()+ " show ID");
     }
+
 }

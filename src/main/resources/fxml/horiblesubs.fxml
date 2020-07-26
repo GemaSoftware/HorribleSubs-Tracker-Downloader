@@ -15,7 +15,6 @@
   </rowConstraints>
    <children>
       <ListView fx:id="showListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-      <Label text="Test" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
          <children>
             <Region maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
@@ -27,5 +26,25 @@
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="animeTitle" maxWidth="300.0" text="animeTitle">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <TableView fx:id="mainAnimeTable" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="episodeNumber" prefWidth="62.0" resizable="false" text="Episode" />
+                <TableColumn fx:id="episodeMagnetLink" prefWidth="268.0" resizable="false" text="Magnet Link" />
+                  <TableColumn fx:id="episodeDownloaded" prefWidth="97.0" resizable="false" text="Download" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
    </children>
 </GridPane>
