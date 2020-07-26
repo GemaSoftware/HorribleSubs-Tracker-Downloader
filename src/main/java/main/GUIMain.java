@@ -9,18 +9,18 @@ import javafx.stage.Stage;
 
 public class GUIMain extends Application {
 
-    HorribleSubWrapper horribleSubWrapper;
+    static HorribleSubWrapper horribleSubWrapper;
 
 
     public GUIMain(){
         //Init the horrible subs wrapper.
-        //this.horribleSubWrapper = new HorribleSubWrapper();
+        this.horribleSubWrapper = new HorribleSubWrapper();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/mainScreen.fxml"));
-        Scene scene = new Scene(root, 600, 400);
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/horiblesubs.fxml"));
+        Scene scene = new Scene(root, 900, 550);
         stage.setTitle("HorribleSubs-Tracker");
         stage.setScene(scene);
         stage.show();

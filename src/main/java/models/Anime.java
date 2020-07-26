@@ -56,11 +56,6 @@ public class Anime {
 
     @Override
     public String toString() {
-        return "Anime{" +
-                "animeLink='" + animeLink + '\'' +
-                ", animeTitle='" + animeTitle + '\'' +
-                ", animeHSID=" + animeHSID +
-                ", animeEpisodeList=" + animeEpisodeList +
-                "}";
+        return animeTitle;
     }
 }
