@@ -14,6 +14,7 @@ public class HorribleSubWrapper {
     private ArrayList<Anime> globalAnimeList;
     private ArrayList<Anime> currentAiringList;
     public HorribleSubWrapper(){
+        System.out.println("Creating wrapper.");
         globalAnimeList = WebUtils.fetchHorribleAnime("/shows/");
         currentAiringList = WebUtils.fetchHorribleAnime("/current-season/");
     }
@@ -26,28 +27,14 @@ public class HorribleSubWrapper {
         return currentAiringList;
     }
 
-    public void searchAnime(){
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Search for an anime:");
-
-        String query = scanner.nextLine();
-        ArrayList<Anime> animeList = WebUtils.searchAnimeList(query, this.globalAnimeList);
-        System.out.println("\nSearch Results:\n------------------");
-
-        for (int i=0; i<animeList.size(); i++) {
-            System.out.println(i+1 + ". "+ animeList.get(i).getAnimeTitle());
-        }
-
-        System.out.println("\nWhich show would you like to access:");
-        String option = scanner.nextLine();
-
+    //TBI - add ability to just search using string that can be called from anywhere without scanner. i,e searchAnime(showname)
+    public ArrayList<Anime> searchAnime(String animeName){
         try{
-            int choice = Integer.parseInt(option);
-            showAnimeDetails(animeList.get(choice-1));
-            System.out.println("go to show details from here.");
-        } catch (Exception e){
+            return WebUtils.searchAnimeList(animeName, this.globalAnimeList);
+        } catch(Exception e){
             e.printStackTrace();
+            return null;
         }
     }
 

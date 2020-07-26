@@ -53,4 +53,14 @@ public class Anime {
     public ArrayList<Episode> getAnimeEpisodeList() {
         return animeEpisodeList;
     }
+
+    @Override
+    public String toString() {
+        return "Anime{" +
+                "animeLink='" + animeLink + '\'' +
+                ", animeTitle='" + animeTitle + '\'' +
+                ", animeHSID=" + animeHSID +
+                ", animeEpisodeList=" + animeEpisodeList +
+                "}";
+    }
 }
