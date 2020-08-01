@@ -16,11 +16,16 @@ public class Episode {
 
     private HashMap<String, String> episodeMagnetLink;
 
+    private Boolean episodeDownloaded;
+
     public Episode(Anime anime, String episodeNumber) {
         episodeID = UUID.randomUUID();
         this.animeID = anime.getAnimeHSID();
         this.episodeNumber = episodeNumber;
         this.episodeMagnetLink = new HashMap<String, String>();
+        //add check to see if episode downloaded to default folder. for now default to false.
+        this.episodeDownloaded = false;
+
     }
 
     //Add model keys for episode details found on HSUB API: Magnetlink, quality, episode number, etc.
@@ -56,5 +61,9 @@ public class Episode {
 
     public HashMap<String, String> getEpisodeMagnetLink() {
         return episodeMagnetLink;
+    }
+
+    public Boolean getEpisodeDownloaded() {
+        return episodeDownloaded;
     }
 }

@@ -58,7 +58,7 @@ public class GUIMainController implements Initializable {
             episodeMagnetLink.setCellValueFactory(ep -> new ReadOnlyStringWrapper(ep.getValue().getEpisodeMagnetLink().get("720p")));
 
             //test - set the download column to just title for now.
-            episodeDownloaded.setCellValueFactory(new PropertyValueFactory<>("animeID"));
+            episodeDownloaded.setCellValueFactory(downloaded -> new ReadOnlyStringWrapper(downloaded.getValue().getEpisodeDownloaded()? "Yes" : "No"));
 
         //add search bar listener to change list.
         searchBox.textProperty().addListener((observable, oldValue, newValue) -> {

@@ -100,7 +100,9 @@ public class WebUtils {
                             //Adds all quality links to each episode.
                             for (Element quality :
                                     episodeQualityLinks) {
-                                if (quality.attr("id").contains("480p")) {
+                                if(quality.attr("id").contains("360p")) {
+                                    episode.addLink("360p", quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
+                                } else if (quality.attr("id").contains("480p")) {
                                     episode.addLink("480p", quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));
                                 } else if (quality.attr("id").contains("720p")) {
                                     episode.addLink("720p", quality.selectFirst("span.hs-magnet-link").selectFirst("a").attr("href"));

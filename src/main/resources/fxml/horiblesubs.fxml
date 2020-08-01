@@ -41,7 +41,7 @@
               <columns>
                 <TableColumn fx:id="episodeNumber" prefWidth="62.0" resizable="false" text="Episode" />
                 <TableColumn fx:id="episodeMagnetLink" prefWidth="268.0" resizable="false" text="Magnet Link" />
-                  <TableColumn fx:id="episodeDownloaded" prefWidth="97.0" resizable="false" text="Download" />
+                  <TableColumn fx:id="episodeDownloaded" prefWidth="97.0" resizable="false" text="Downloaded" />
               </columns>
             </TableView>
          </children>
